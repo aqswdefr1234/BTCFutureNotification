@@ -117,43 +117,43 @@ public class FCM_Initialization : MonoBehaviour
             if (task.IsCompletedSuccessfully)
             {
                 DocumentSnapshot snapshot = task.Result;
-                if (snapshot.Exists)//ÀÌÀü¿¡ »ç¿ëÇÑ À¯ÀúÀÏ °æ¿ì
+                if (snapshot.Exists)//ì´ì „ì— ì‚¬ìš©í•œ ìœ ì €ì¼ ê²½ìš°
                 {
                     string oldToken = snapshot.GetValue<string>("Token");
                     NotifyTextEventController.NotifyText = "Token is Changed";
                     SaveUser(uid, email, token, oldToken);
                     CloudUpdate(db.Collection("Users").Document(uid).Collection("MyNotification"), token, oldToken);
                 }
-                else//»ç¿ëÇÑÀû ¾ø´Â »õ·Î¿î À¯Àú
+                else//ì‚¬ìš©í•œì  ì—†ëŠ” ìƒˆë¡œìš´ ìœ ì €
                 {
                     SaveUser(uid, email, token, "");
                 }
             }
         });
     }
-    private void CloudUpdate(CollectionReference collectionRef, string newToken,string oldToken)//ÀÌÀü¿¡ »ç¿ëÇÑ À¯ÀúÀÏ °æ¿ì ÀÛµ¿
+    private void CloudUpdate(CollectionReference collectionRef, string newToken,string oldToken)//ì´ì „ì— ì‚¬ìš©í•œ ìœ ì €ì¼ ê²½ìš° ì‘ë™
     {
         DocumentReference sourceDocumentRef = collectionRef.Document(oldToken);
         sourceDocumentRef.GetSnapshotAsync().ContinueWith(task =>
         {
             if (task.IsFaulted)
             {
-                Debug.LogError("¹®¼­ °¡Á®¿À±â ½ÇÆĞ: " + task.Exception);
+                Debug.LogError("ë¬¸ì„œ ê°€ì ¸ì˜¤ê¸° ì‹¤íŒ¨: " + task.Exception);
                 return;
             }
             DocumentSnapshot sourceDocument = task.Result;
 
             if (sourceDocument.Exists)
             {
-                // »õ·Î¿î ¹®¼­ id·Î »õ·Î¿î ¹®¼­¸¦ »ı¼ºÇÕ´Ï´Ù.
+                // ìƒˆë¡œìš´ ë¬¸ì„œ idë¡œ ìƒˆë¡œìš´ ë¬¸ì„œë¥¼ ìƒì„±í•©ë‹ˆë‹¤.
                 Dictionary<string, object> data = sourceDocument.ToDictionary();
                 DocumentReference newDocumentRef = collectionRef.Document(newToken);
                 newDocumentRef.SetAsync(data);
 
-                //¸®¾óÅ¸ÀÓµ¥ÀÌÅÍº£ÀÌ½º º¯°æ
+                //ë¦¬ì–¼íƒ€ì„ë°ì´í„°ë² ì´ìŠ¤ ë³€ê²½
                 RealTimeUpdate(data, newToken);
 
-                // ±âÁ¸ ¹®¼­¸¦ »èÁ¦ÇÕ´Ï´Ù.
+                // ê¸°ì¡´ ë¬¸ì„œë¥¼ ì‚­ì œí•©ë‹ˆë‹¤.
                 sourceDocumentRef.DeleteAsync().ContinueWith(task =>
                 {
                     if (task.IsFaulted)
@@ -164,7 +164,6 @@ public class FCM_Initialization : MonoBehaviour
                     {
                         return;
                     }
-                    //transform.GetComponent<LoadConditions>().LoadCurrentSelectedNotification(newToken);//½ºÅ©¸° °»½Å
                 });
             }
         });
@@ -187,7 +186,7 @@ public class FCM_Initialization : MonoBehaviour
                         {
                             return;
                         }
-                        transform.GetComponent<LoadConditions>().LoadCurrentSelectedNotification(_token);//½ºÅ©¸° °»½Å
+                        transform.GetComponent<LoadConditions>().LoadCurrentSelectedNotification(_token);//ìŠ¤í¬ë¦° ê°±ì‹ 
                     });
                 }
             }
@@ -207,12 +206,12 @@ public class FCM_Initialization : MonoBehaviour
                 return;
             }
 
-            if (task.Result.Value != null)//ÇØ´ç key°¡ Á¸ÀçÇÑ´Ù¸é ÀÌ¹Ì »ç¿ëÇÑ ÀûÀÌ ÀÖ´Â À¯Àú
+            if (task.Result.Value != null)//í•´ë‹¹ keyê°€ ì¡´ì¬í•œë‹¤ë©´ ì´ë¯¸ ì‚¬ìš©í•œ ì ì´ ìˆëŠ” ìœ ì €
             {
                 string realtimeDatabaseToken = task.Result.Value.ToString();
                 FCMGetToken(realtimeDatabaseToken);
             }
-            else//Á¸ÀçÇÏÁö ¾Ê´Â´Ù¸é(¾Æ¸¶ Ã³À½ »ç¿ëÇÏ´Â À¯Àú)
+            else//ì¡´ì¬í•˜ì§€ ì•ŠëŠ”ë‹¤ë©´(ì•„ë§ˆ ì²˜ìŒ ì‚¬ìš©í•˜ëŠ” ìœ ì €)
             {
                 FirstUseFCMTokenGet();
             }
