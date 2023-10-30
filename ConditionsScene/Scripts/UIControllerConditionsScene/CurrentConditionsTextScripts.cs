@@ -5,7 +5,7 @@ using TMPro;
 public class CurrentConditionsTextScripts : MonoBehaviour
 {
     [SerializeField] private TMP_Text currentSelectedConditionsText;
-    // Start is called before the first frame update
+
     void Start()
     {
         SelectedConditionsEvent.OnSelectedConditionsChanged += ConditionsHandler;
