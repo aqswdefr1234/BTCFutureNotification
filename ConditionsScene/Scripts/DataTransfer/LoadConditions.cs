@@ -12,8 +12,8 @@ public class LoadConditions : MonoBehaviour
 {
     [SerializeField] private TMP_Text myNotificationText;
     private FirebaseFirestore db;
+    
     public List<string> inputIndicators = new List<string>();
-    //public Dictionary<string, List<string>> data = new Dictionary<string, List<string>>();
     public List<string> listKey = new List<string>();
     public List<string> listValue = new List<string>();
     public void LoadCurrentSelectedNotification(string token)
