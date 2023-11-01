@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class DontDestroyController : MonoBehaviour
 {
-    private DontDestroyController instance;
     [SerializeField] GameObject dontDestroyUIObject;
+    private DontDestroyController instance;
     private int clickCount = 0;
     private float timer = 0;
     void Awake()
@@ -22,7 +22,7 @@ public class DontDestroyController : MonoBehaviour
             DontDestroyOnLoad(dontDestroyUIObject);
         }
     }
-    void Update()//æ€ ¡æ∑·
+    void Update()//¬æ√õ √Å¬æ¬∑√°
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
