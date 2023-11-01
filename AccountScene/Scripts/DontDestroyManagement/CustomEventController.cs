@@ -19,6 +19,5 @@ public class CustomEventController : MonoBehaviour
     {
         yield return new WaitForSeconds(5f);
         notifyText.text = "";
-        yield return null;
     }
 }
